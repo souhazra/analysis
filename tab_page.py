@@ -12,7 +12,7 @@ app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.layout = dbc.Container(
     [
         dcc.Store(id="store"),
-        html.H1("Dynamically rendered tab content"),
+        html.H1("Upload the dataset"),
         html.Hr(),
         dbc.Button(
             "Regenerate graphs",
