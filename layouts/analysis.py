@@ -7,7 +7,23 @@ from dash import Input, Output, dcc, html, callback, State
 from layouts.data_upload import data_upload_layout, parse_contents
 import plotly.express as px
 
-df = px.data.iris()  # iris is a pandas DataFrame
-fig = px.scatter(df, x="sepal_width", y="sepal_length")
+total_revenue_card = dbc.Card(
+    [
+        dbc.CardImg(src="/static/images/placeholder286x180.png", top=True),
+        dbc.CardBody(
+            [
+                html.H4("Total Revenue", className="card-title"),
+                html.P(
+                    "Some quick example text to build on the card title and "
+                    "make up the bulk of the card's content.",
+                    className="card-text",
+                ),
+                html.Div(id="output-total-revenue"),
+            ]
+        ),
+    ],
+    style={"width": "18rem"},
+)
 
-dcc.Graph(figure=fig)
+def get_total_revenue(df):
+    return df.Sales.sum()

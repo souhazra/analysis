@@ -6,6 +6,7 @@ import numpy as np
 import plotly.graph_objs as go
 from dash import Input, Output, dcc, html, callback, State
 from layouts.data_upload import data_upload_layout, parse_contents
+from layouts.analysis import total_revenue_card, get_total_revenue
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -50,8 +51,9 @@ def render_tab_content(active_tab, data):
         elif active_tab == "histogram":
             return dbc.Row(
                 [
-                    dbc.Col(dcc.Graph(figure=data["hist_1"]), width=6),
-                    dbc.Col(dcc.Graph(figure=data["hist_2"]), width=6),
+                    total_revenue_card
+                    # dbc.Col(dcc.Graph(figure=data["hist_1"]), width=6),
+                    # dbc.Col(dcc.Graph(figure=data["hist_2"]), width=6),
                 ]
             )
     return "No tab selected"
@@ -90,6 +92,15 @@ def update_output(list_of_contents, list_of_names):
         children = [
             parse_contents(c, n) for c, n in
             zip(list_of_contents, list_of_names)]
+        return children
+
+
+@callback(Output('output-total-revenue', 'children'),
+          Input('upload-data', 'contents'), )
+def update_output(list_of_contents):
+    print("-------------")
+    if list_of_contents is not None:
+        children = get_total_revenue(list_of_contents)
         return children
 
 
