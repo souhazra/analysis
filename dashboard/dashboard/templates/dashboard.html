@@ -290,8 +290,11 @@
       </div>
     </div>
 
-
- <div id='best_selling_product_container' ></div>
+      <div class="row">
+            <div class="col">
+              <div id='best_selling_product_container' ></div>
+            </div>
+      </div>
     </main>
 
   </div>
@@ -303,6 +306,7 @@
     <script type='text/javascript'>
       var graphs = {{values.best_selling_product | safe}};
       Plotly.plot('best_selling_product_container',graphs,{});
+
     </script>
   </body>
 {% endblock %}

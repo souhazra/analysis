@@ -33,11 +33,13 @@ class ProcessData:
 
     def best_selling_product(self):
         # will change Product Name after confirmation
-        top10_selling_product = self.df.groupby(['Product ID']).agg({'Quantity': 'sum'}).reset_index().sort_values(
+        var_name = 'Product Name'
+        top10_selling_product = self.df.groupby([var_name]).agg({'Quantity': 'sum'}).reset_index().sort_values(
             by="Quantity", ascending=False).head(10)
         # which column product name or product id? one product id has different product name why?
-        fig = px.bar(top10_selling_product, x='Product ID', y='Quantity', barmode='group',
-                     title="Top 10 Best selling Product")
+        fig = px.bar(top10_selling_product, y=var_name, x='Quantity', barmode="group",
+                     title="Top 10 Best selling Product(highest quantity sold)")
+        fig.update_layout(yaxis={'categoryorder': 'total ascending'})
         return fig
 
 # import csv
