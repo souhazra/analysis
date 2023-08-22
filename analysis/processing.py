@@ -104,7 +104,7 @@ class ProcessData:
         insights1 = f"The most popular shipping mode is {self.df['Ship Mode'].value_counts().index[0]}, followed by " \
         f"{self.df['Ship Mode'].value_counts().index[1]}"
         insights2 = f"The most popular product category is {self.df['Category'].value_counts().index[0]}," \
-                    f" followed by {{self.df['Category'].value_counts().index[1]}}."
+                    f" followed by {self.df['Category'].value_counts().index[1]}."
         self.df["max_profit"] = self.df["Sales"] - self.df["Profit"] / self.df["Quantity"]
         self.df[["Product Name", "max_profit"]].sort_values(by="max_profit", ascending=False)
         return {"insights1":insights1, "insights2":insights2}
