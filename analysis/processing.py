@@ -10,7 +10,7 @@ class ProcessData:
         self.df = pd.read_csv(self.file_path, encoding="latin1")
 
     def calculate_average_price_per_item(self):
-        average_price_per_item = self.df['Sales'].mean()
+        average_price_per_item = self.df['Sales'].mean().round(2)
         return average_price_per_item
 
     def get_total_revenue(self):

@@ -26,7 +26,7 @@ def dashboard():
     if file_path and ".csv" in file_path.lower():
         analysis = processing.ProcessData(file_path)
         values = {"total_revenue": analysis.get_total_revenue(),
-                  "average_price_per_item": analysis.average_price_per_item(),
+                  "average_price_per_item": analysis.calculate_average_price_per_item(),
                   "total_orders_count": analysis.get_orders_count(), "total_profit": analysis.get_total_profit(),
                   "best_selling_product": json.dumps(analysis.best_selling_product(),
                                                      cls=plotly.utils.PlotlyJSONEncoder),
