@@ -1,22 +1,29 @@
 import pandas as pd
 import plotly.express as px
+import plotly.colors as colors
+import plotly.graph_objects as go
+
 
 class ProcessData:
     def __init__(self, file_path):
         self.file_path = file_path
         self.df = pd.read_csv(self.file_path, encoding="latin1")
 
+    def calculate_average_price_per_item(self):
+        average_price_per_item = self.df['Sales'].mean()
+        return average_price_per_item
+
     def get_total_revenue(self):
         try:
             revenue = self.df.Sales.sum().round(2)
-            return f"${revenue/1000:.1f}k"
+            return f"${revenue / 1000:.1f}k"
         except:
             return "Error"
 
     def get_total_profit(self):
         try:
             profit = self.df.Profit.sum().round(2)
-            return f"${profit/1000:.1f}k"
+            return f"${profit / 1000:.1f}k"
 
         except:
             return "Error"
@@ -38,60 +45,62 @@ class ProcessData:
             by="Quantity", ascending=False).head(10)
         # which column product name or product id? one product id has different product name why?
         fig = px.bar(top10_selling_product, y=var_name, x='Quantity', barmode="group",
-                     title="Top 10 Best selling Product(highest quantity sold)")
+                     )
         fig.update_layout(yaxis={'categoryorder': 'total ascending'})
         return fig
 
-# import csv
-#
-# # Read the CSV data into a list of dictionaries
-# data = []
-# with open("orders.csv", "r") as csvfile:
-#     reader = csv.DictReader(csvfile)
-#     for row in reader:
-#         data.append(row)
-#
-# # Get the most popular shipping mode
-# most_popular_shipping_mode = max(data, key=lambda x: x["Ship Mode"])["Ship Mode"]
-#
-# # Get the most popular product category
-# most_popular_product_category = max(data, key=lambda x: x["Category"])["Category"]
-#
-# # Get the most popular product sub-category
-# most_popular_product_sub_category = max(data, key=lambda x: x["Sub-Category"])["Sub-Category"]
-#
-# # Get the most profitable product
-# most_profitable_product = max(data, key=lambda x: x["Profit"])
-#
-# # Get the least profitable product
-# least_profitable_product = min(data, key=lambda x: x["Profit"])
-#
-# # Get the most orders from each country
-# most_orders_per_country = {}
-# for row in data:
-#     country = row["Country"]
-#     if country not in most_orders_per_country:
-#         most_orders_per_country[country] = 0
-#     most_orders_per_country[country] += 1
-#
-# # Get the most orders from each region
-# most_orders_per_region = {}
-# for row in data:
-#     region = row["Region"]
-#     if region not in most_orders_per_region:
-#         most_orders_per_region[region] = 0
-#     most_orders_per_region[region] += 1
-#
-# # Print the results
-# print("The most popular shipping mode is:", most_popular_shipping_mode)
-# print("The most popular product category is:", most_popular_product_category)
-# print("The most popular product sub-category is:", most_popular_product_sub_category)
-# print("The most profitable product is:", most_profitable_product)
-# print("The least profitable product is:", least_profitable_product)
-# print("The most orders from each country are:")
-# for country, orders in most_orders_per_country.items():
-#     print(f"{country}: {orders}")
-# print("The most orders from each region are:")
-# for region, orders in most_orders_per_region.items():
-#     print(f"{region}: {orders}")
-#
+    def top_profitable_products(self):
+        products_info = self.df.groupby("Product Name", as_index=False).agg(
+            Profit=("Profit", "sum")
+        )
+        profitable = products_info[["Product Name", "Profit"]].sort_values(by=['Profit'],
+                                                                           ascending=False).head(10)
+        fig = px.bar(profitable, y='Product Name', x='Profit', barmode="group",
+                     )
+        fig.update_layout(yaxis={'categoryorder': 'total ascending'})
+        return fig
+
+    def sales_profit_timeline(self):
+        df_line = self.df[['Order Date', 'Sales', 'Profit']].sort_values('Order Date')  # Chronological Ordering
+        df_line['Order Date'] = pd.to_datetime(df_line['Order Date'])  # Converting into DateTime
+        df_line = df_line.groupby('Order Date',
+                                  as_index=False).mean()  # Group by to get the average Sales and Profit on each day
+        fig = px.line(df_line, x='Order Date', y='Sales')
+        fig.add_scatter(x=df_line['Order Date'], y=df_line['Profit'], mode='lines', showlegend=False)
+        return fig
+
+    def sales_profit_by_customer_segment(self):
+        sales_profit_by_segment = self.df.groupby('Segment', as_index=False).agg({'Sales': 'sum', 'Profit': 'sum'})
+        color_palette = colors.qualitative.Pastel
+        fig = go.Figure()
+        fig.add_trace(go.Bar(x=sales_profit_by_segment['Segment'],
+                             y=sales_profit_by_segment['Sales'],
+                             name='Sales',
+                             marker_color=color_palette[1]))
+        fig.add_trace(go.Bar(x=sales_profit_by_segment['Segment'],
+                             y=sales_profit_by_segment['Profit'],
+                             name='Profit',
+                             marker_color=color_palette[0]))
+
+        fig.update_layout(xaxis_title='Customer Segment', yaxis_title='Amount')
+
+        return fig
+
+    def top_profitable_cites(self):
+        cities_info = self.df.groupby("City", as_index=False).agg(
+            sales=("Sales", "sum"),
+            profit=("Profit", "sum")
+        )
+        top_profit = cities_info[['City', 'profit']].sort_values(by=["profit"], ascending=False).head(10)
+        fig = px.funnel(top_profit, x='profit', y='City', title='Top-10 Profitable Cities')
+        return fig
+
+    def sales_category_wise(self):
+        category = self.df.groupby(["Category", "Sub-Category"], as_index=False).agg({"Sales":"sum"})
+        fig = px.sunburst(category, path=['Category', 'Sub-Category'], values='Sales')
+        return fig
+
+    def get_insights(self):
+        pass
+        # most_popular_shipping_mode = max(data, key=lambda x: x["Ship Mode"])["Ship Mode"]
+        # most_popular_product_category = max(data, key=lambda x: x["Category"])["Category"]

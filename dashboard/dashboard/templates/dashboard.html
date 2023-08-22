@@ -290,11 +290,83 @@
       </div>
     </div>
 
+      <div class="row row-cols-1 row-cols-md-12 mb-3 text-center">
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3 border-primary text-bg-primary">
+            <h4 class="my-0 fw-normal">Top 10 Best-selling item (the highest quantity sold)</h4>
+          </div>
+          <div class="card-body">
+            <div id='best_selling_product_container' ></div>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Staples is the highest selling item(215 times)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-12 mb-3 text-center">
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3 border-primary text-bg-primary">
+            <h4 class="my-0 fw-normal">Top 10 Profitable item</h4>
+          </div>
+          <div class="card-body">
+            <div id='top_profitable_product_container' ></div>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Canon imageCLASS 2200 Advanced Copier is the most profitable item($25.2 K)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
       <div class="row">
-            <div class="col">
-              <div id='best_selling_product_container' ></div>
+            <div class="col-6" >
+              <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3 border-primary text-bg-primary">
+            <h4 class="my-0 fw-normal">Trend Over Period Of Time</h4>
+          </div>
+          <div class="card-body">
+            <div id='sales_profit_timeline_container'></div>
+          </div>
+        </div>
+            </div>
+            <div class="col-6">
+              <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3 border-primary text-bg-primary">
+            <h4 class="my-0 fw-normal">Sales & Profit Analysis by Segment</h4>
+          </div>
+          <div class="card-body">
+            <div id='sales_profit_by_customer_segment_container'></div>
+          </div>
+        </div>
             </div>
       </div>
+      <div class="row">
+            <div class="col-6" >
+              <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3 border-primary text-bg-primary">
+            <h4 class="my-0 fw-normal">Total Sales Category & Sub Category Wise</h4>
+          </div>
+          <div class="card-body">
+            <div id='sales_category_wise_container'></div>
+          </div>
+        </div>
+            </div>
+            <div class="col-6">
+              <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3 border-primary text-bg-primary">
+            <h4 class="my-0 fw-normal">Top Profitable Cites</h4>
+          </div>
+          <div class="card-body">
+            <div id='top_profitable_cites_container'></div>
+          </div>
+        </div>
+            </div>
+      </div>
+
     </main>
 
   </div>
@@ -304,8 +376,25 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js" integrity="sha384-gdQErvCNWvHQZj6XZM0dNsAoY4v+j5P1XDpNkcM3HJG1Yx04ecqIHk7+4VBOCHOG" crossorigin="anonymous"></script><script src="{{ url_for('static', filename='/assets/dashboard.js')}}"></script>
   <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
     <script type='text/javascript'>
-      var graphs = {{values.best_selling_product | safe}};
-      Plotly.plot('best_selling_product_container',graphs,{});
+      var sales_graphs = {{values.best_selling_product | safe}};
+      Plotly.plot('best_selling_product_container',sales_graphs,{});
+
+      var profit_graphs = {{values.top_profitable_products | safe}};
+      Plotly.plot('top_profitable_product_container',profit_graphs,{});
+
+      var sales_profit_timeline_graph = {{values.sales_profit_timeline | safe}};
+      Plotly.plot('sales_profit_timeline_container',sales_profit_timeline_graph,{});
+
+      var sales_profit_by_customer_segment_graph = {{values.sales_profit_by_customer_segment | safe}};
+      Plotly.plot('sales_profit_by_customer_segment_container',sales_profit_by_customer_segment_graph,{});
+
+
+      var top_profitable_cites_graph = {{values.top_profitable_cites | safe}};
+      Plotly.plot('top_profitable_cites_container',top_profitable_cites_graph,{});
+
+      var sales_category_wise_graph = {{values.sales_category_wise | safe}};
+      Plotly.plot('sales_category_wise_container',sales_category_wise_graph,{});
+
 
     </script>
   </body>
