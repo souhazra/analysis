@@ -101,8 +101,16 @@ class ProcessData:
         return fig
 
     def get_insights(self):
-        pass
-        # most_popular_shipping_mode = max(data, key=lambda x: x["Ship Mode"])["Ship Mode"]
+        insights1 = f"The most popular shipping mode is {self.df['Ship Mode'].value_counts().index[0]}, followed by " \
+        f"{self.df['Ship Mode'].value_counts().index[1]}"
+        insights2 = f""
+        """
+        The most popular product category is Furniture, followed by Office Supplies and Technology.
+        The most popular product sub-category is Tables, followed by Bookcases and Chairs.
+        The most profitable product is the Bush Somerset Collection Bookcase, with a profit of $41.91.
+        The least profitable product is the Holmes Replacement Filter for HEPA Air Cleaner, with a loss of $123.86.
+        The most orders were placed by consumers in the United States, followed by corporate customers in the United States.
+        """
         # most_popular_product_category = max(data, key=lambda x: x["Category"])["Category"]
 
 
