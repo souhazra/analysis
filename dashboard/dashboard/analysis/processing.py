@@ -104,3 +104,12 @@ class ProcessData:
         pass
         # most_popular_shipping_mode = max(data, key=lambda x: x["Ship Mode"])["Ship Mode"]
         # most_popular_product_category = max(data, key=lambda x: x["Category"])["Category"]
+
+
+def validate_csv(file_path):
+    df = pd.read_csv(file_path, encoding="latin1")
+    cols = set(df.columns.tolist())
+    predefined_cols = {'Category', 'City', 'Country', 'Customer ID', 'Customer Name', 'Discount', 'Order Date',
+                       'Order ID', 'Postal Code', 'Product ID', 'Product Name', 'Profit', 'Quantity', 'Region',
+                       'Row ID', 'Sales', 'Segment', 'Ship Date', 'Ship Mode', 'State', 'Sub-Category'}
+    return cols == predefined_cols

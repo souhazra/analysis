@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
   <head><script src="{{ url_for('static',filename='/assets/js/color-modes.js') }}"></script>
-
+{% block content %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -201,7 +201,7 @@
 </svg>
 
 <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">Company name</a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">EXL Test</a>
 
   <ul class="navbar-nav flex-row d-md-none">
     <li class="nav-item text-nowrap">
@@ -253,6 +253,10 @@
         <h1 class="h2">Upload Data Set</h1>
 
       </div>
+      {% if message.flag %}
+      <p class="text-warning">{{ message.value }}</p>
+        <h1></h1>
+      {% endif %}
       <form method = "POST" enctype="multipart/form-data" action="/uploadFile">
            <div class="col-12">
               <div>
@@ -280,6 +284,10 @@
     </main>
   </div>
 </div>
+
+
+
+    {% endblock %}
 <script src="{{ url_for('static',filename='/assets/dist/js/bootstrap.bundle.min.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js" integrity="sha384-gdQErvCNWvHQZj6XZM0dNsAoY4v+j5P1XDpNkcM3HJG1Yx04ecqIHk7+4VBOCHOG" crossorigin="anonymous"></script><script src="{{ url_for('static', filename='/assets/dashboard.js')}}"></script></body>
